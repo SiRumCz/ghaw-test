@@ -1,0 +1,26 @@
+# Configuration for the labeler action
+# https://github.com/actions/labeler
+
+# Label for Python source code changes
+'python':
+  - '**/*.py'
+
+# Label for test changes
+'tests':
+  - 'tests/**/*'
+
+# Label for documentation changes
+'documentation':
+  - '**/*.md'
+  - 'docs/**/*'
+
+# Label for GitHub Actions workflow changes
+'github-actions':
+  - '.github/**/*'
+
+# Label for dependency changes
+'dependencies':
+  - 'requirements.txt'
+  - 'requirements-dev.txt'
+  - 'setup.py'
+  - 'pyproject.toml'

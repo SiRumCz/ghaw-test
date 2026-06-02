@@ -1,0 +1,78 @@
+name: Auto Review PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Auto review PR
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const { data: files } = await github.rest.pulls.listFiles({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.issue.number,
+          });
+
+          let comments = [];
+          let issues = [];
+
+          // Check for common issues
+          for (const file of files) {
+            // Check if tests are added for new code
+            if (file.filename.startsWith('src/') &&
+                file.filename.endsWith('.py') &&
+                file.status === 'added') {
+              const testFile = file.filename.replace('src/', 'tests/test_');
+              const hasTest = files.some(f => f.filename === testFile);
+
+              if (!hasTest) {
+                issues.push(`⚠️ New file \`${file.filename}\` added without corresponding test file`);
+              }
+            }
+
+            // Check for large files
+            if (file.additions > 300) {
+              issues.push(`📊 File \`${file.filename}\` has ${file.additions} additions. Consider breaking it into smaller pieces.`);
+            }
+
+            // Check for removed tests
+            if (file.filename.startsWith('tests/') && file.status === 'removed') {
+              issues.push(`❌ Test file \`${file.filename}\` was removed. Make sure this is intentional.`);
+            }
+          }
+
+          // Create review comment
+          let reviewBody = '## 🤖 Automated PR Review\n\n';
+
+          if (issues.length > 0) {
+            reviewBody += '### Issues Found:\n' + issues.map(i => `- ${i}`).join('\n');
+            reviewBody += '\n\n';
+          } else {
+            reviewBody += '✅ No obvious issues found!\n\n';
+          }
+
+          reviewBody += '### Summary:\n';
+          reviewBody += `- **Files changed:** ${files.length}\n`;
+          reviewBody += `- **Total additions:** ${files.reduce((sum, f) => sum + f.additions, 0)}\n`;
+          reviewBody += `- **Total deletions:** ${files.reduce((sum, f) => sum + f.deletions, 0)}\n`;
+
+          // Post review comment
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: reviewBody
+          });

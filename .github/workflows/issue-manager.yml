@@ -1,0 +1,72 @@
+name: Issue Manager
+
+on:
+  issues:
+    types: [opened]
+  schedule:
+    # Run daily at midnight UTC
+    - cron: '0 0 * * *'
+
+jobs:
+  greet-new-issue:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'opened'
+    permissions:
+      issues: write
+
+    steps:
+    - name: Greet issue creator
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const issue = context.payload.issue;
+          const isFirstIssue = (
+            await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              creator: issue.user.login,
+              state: 'all'
+            })
+          ).data.length === 1;
+
+          let greeting = `👋 Hello @${issue.user.login}! `;
+
+          if (isFirstIssue) {
+            greeting += 'Thanks for opening your first issue in this repository! ';
+          } else {
+            greeting += 'Thanks for opening this issue! ';
+          }
+
+          greeting += 'A maintainer will review it and get back to you soon.\n\n';
+          greeting += '**Tip:** Make sure you\'ve provided all the necessary information to help us address your issue quickly.';
+
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: issue.number,
+            body: greeting
+          });
+
+  close-stale-issues:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    permissions:
+      issues: write
+
+    steps:
+    - name: Close stale issues
+      uses: actions/stale@v9
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        days-before-stale: 60
+        days-before-close: 7
+        stale-issue-message: >
+          This issue has been automatically marked as stale because it has been open
+          for 60 days with no activity. It will be closed in 7 days if no further
+          activity occurs. If you believe this issue is still relevant, please comment
+          to keep it open.
+        close-issue-message: >
+          This issue has been automatically closed due to inactivity. If you believe
+          this issue should be reopened, please create a new issue referencing this one.
+        stale-issue-label: 'stale'
+        exempt-issue-labels: 'pinned,security'
