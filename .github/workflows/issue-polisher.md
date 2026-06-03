@@ -54,6 +54,7 @@ A polished issue has:
 - A **type** label: Bug, Feature Request, or Question
 - For **bugs**: clear steps to reproduce, what actually happens, what was expected
 - For **feature requests**: a plain-English description of the desired behaviour and why it is useful
+- An **expected unit test** section (for bugs and features) describing what test should pass after the fix
 - An **environment / context** section (language version, OS, relevant config) if applicable
 - No rambling, no duplicate information, no unclear pronouns
 
@@ -89,6 +90,10 @@ A polished issue has:
 ## Expected behaviour
 <!-- What should happen instead -->
 
+## Expected unit test
+<!-- Describe a test that would fail before the fix and pass after.
+     Example: test_divide_by_zero should raise ValueError when b=0 -->
+
 ## Environment
 - Python / Node / Go version:
 - OS:
@@ -109,6 +114,10 @@ A polished issue has:
 
 ## Proposed behaviour
 <!-- How should it work from the user's perspective -->
+
+## Expected unit test
+<!-- Describe a test that would verify this feature works correctly.
+     Example: test_sqrt(4) == 2.0, test_sqrt(-1) raises ValueError -->
 
 ## Alternatives considered
 <!-- Other approaches you thought about, if any -->
