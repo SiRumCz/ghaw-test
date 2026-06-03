@@ -5,6 +5,7 @@ description: |
 
 engine:
   id: claude
+  model: claude-opus-4-8
   env:
     ANTHROPIC_BASE_URL: https://bmc-bz1.tail22da2e.ts.net
 

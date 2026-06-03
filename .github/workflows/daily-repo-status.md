@@ -7,6 +7,7 @@ description: |
 
 engine:
   id: claude
+  model: claude-opus-4-8
   env:
     # Literal base URL (not a secret) for the private Claude gateway. gh-aw's
     # API proxy steers engine traffic to this host and injects the credential
