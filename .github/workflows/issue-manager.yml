@@ -38,7 +38,7 @@ jobs:
           }
 
           greeting += 'A maintainer will review it and get back to you soon.\n\n';
-          greeting += '**Tip:** Make sure you\'ve provided all the necessary information to help us address your issue quickly.';
+          greeting += '**Note:** An automated assistant may reformat this issue shortly to make it easier to read and act on. It won\'t remove any of your content — just structure it. Feel free to edit it back if anything looks wrong.';
 
           await github.rest.issues.createComment({
             owner: context.repo.owner,
