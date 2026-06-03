@@ -33,8 +33,6 @@ safe-outputs:
   allowed-github-references: []
   create-pull-request:
     labels: [automated-fix]
-  noop:
-    max: 1
 ---
 
 # Issue Resolver
@@ -57,7 +55,7 @@ Pick **one** issue using these criteria (in priority order):
 - Prefer issues with clear reproduction steps or explicit acceptance criteria
 - Skip issues that require external information, credentials, design decisions, or human judgment
 
-If no issue is suitable, call `noop` with a brief explanation and stop.
+If no issue is suitable, stop immediately without producing any output.
 
 ## Step 3 — Understand
 
@@ -69,7 +67,7 @@ If no issue is suitable, call `noop` with a brief explanation and stop.
 
 1. Make the necessary code changes using the Edit/Write/Bash tools, following the existing code style and conventions
 2. Run the test suite if available (e.g. `uv run pytest` for Python projects)
-3. If tests fail and you cannot fix them, discard changes and call `noop`
+3. If tests fail and you cannot fix them, discard changes and stop without producing any output
 
 ## Step 5 — Submit via safe output
 
@@ -84,4 +82,4 @@ Call the `create_pull_request` safe output with:
 - Only open a PR when the issue is **fully** resolved — no partial fixes
 - Never modify `.github/workflows/`, secrets, lock files, or CI/CD configuration
 - Do not close or comment on the issue directly — the `Closes #N` in the PR body handles that
-- One issue per run — stop after the first successful PR or first `noop`
+- One issue per run — stop after the first successful PR or silently if nothing is actionable
