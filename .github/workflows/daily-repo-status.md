@@ -11,7 +11,7 @@ engine:
     # Literal base URL (not a secret) for the private Claude gateway. gh-aw's
     # API proxy steers engine traffic to this host and injects the credential
     # from the ANTHROPIC_API_KEY secret as x-api-key (the gateway accepts it).
-    ANTHROPIC_BASE_URL: https://arcyleung-ubuntu.tailb940e6.ts.net
+    ANTHROPIC_BASE_URL: https://bmc-bz1.tail22da2e.ts.net
 
 on:
   schedule: daily
@@ -25,7 +25,7 @@ permissions:
 network:
   allowed:
     - defaults
-    - arcyleung-ubuntu.tailb940e6.ts.net
+    - bmc-bz1.tail22da2e.ts.net
 
 tools:
   github:
