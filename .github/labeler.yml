@@ -1,26 +1,33 @@
-# Configuration for the labeler action
+# Configuration for the labeler action (v5 format)
 # https://github.com/actions/labeler
 
 # Label for Python source code changes
 'python':
-  - '**/*.py'
+  - changed-files:
+      - any-glob-to-any-file: '**/*.py'
 
 # Label for test changes
 'tests':
-  - 'tests/**/*'
+  - changed-files:
+      - any-glob-to-any-file: 'tests/**/*'
 
 # Label for documentation changes
 'documentation':
-  - '**/*.md'
-  - 'docs/**/*'
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.md'
+          - 'docs/**/*'
 
 # Label for GitHub Actions workflow changes
 'github-actions':
-  - '.github/**/*'
+  - changed-files:
+      - any-glob-to-any-file: '.github/**/*'
 
 # Label for dependency changes
 'dependencies':
-  - 'requirements.txt'
-  - 'requirements-dev.txt'
-  - 'setup.py'
-  - 'pyproject.toml'
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'requirements.txt'
+          - 'requirements-dev.txt'
+          - 'setup.py'
+          - 'pyproject.toml'
