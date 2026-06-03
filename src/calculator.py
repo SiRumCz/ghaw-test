@@ -2,6 +2,7 @@
 A simple calculator module for testing GitHub agentic workflows.
 """
 
+
 def add(a: float, b: float) -> float:
     """Add two numbers."""
     return a + b
@@ -26,4 +27,4 @@ def divide(a: float, b: float) -> float:
 
 def power(base: float, exponent: float) -> float:
     """Raise base to the power of exponent."""
-    return base ** exponent
+    return base**exponent

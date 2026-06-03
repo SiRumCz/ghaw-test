@@ -1,14 +1,16 @@
 """
 Tests for the calculator module.
 """
-import pytest
+
 import sys
 from pathlib import Path
+
+import pytest
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from calculator import add, subtract, multiply, divide, power
+from calculator import add, divide, multiply, power, subtract
 
 
 class TestCalculator:
