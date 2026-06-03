@@ -5,7 +5,13 @@ description: |
   engaging GitHub issues with productivity insights, community highlights,
   and project recommendations.
 
-engine: claude
+engine:
+  id: claude
+  env:
+    # Literal base URL (not a secret) for the private Claude gateway. gh-aw's
+    # API proxy steers engine traffic to this host and injects the credential
+    # from the ANTHROPIC_API_KEY secret as x-api-key (the gateway accepts it).
+    ANTHROPIC_BASE_URL: https://arcyleung-ubuntu.tailb940e6.ts.net
 
 on:
   schedule: daily
@@ -16,7 +22,10 @@ permissions:
   issues: read
   pull-requests: read
 
-network: defaults
+network:
+  allowed:
+    - defaults
+    - arcyleung-ubuntu.tailb940e6.ts.net
 
 tools:
   github:
