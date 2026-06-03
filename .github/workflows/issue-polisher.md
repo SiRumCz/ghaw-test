@@ -63,8 +63,12 @@ A polished issue has:
 2. Identify the type: bug, feature request, or question.
 3. Check if it is already clear and complete — if so, call `noop`.
 4. Rewrite the body using the appropriate template below. Preserve all factual details from the original; only improve structure and clarity. Do not invent or assume missing information — leave a `_TODO: reporter to fill in_` placeholder instead.
-5. Update the issue body with the rewritten version using `update_issue`.
-6. Add a short comment explaining that the issue was auto-formatted for clarity, and invite the reporter to correct anything that looks wrong.
+5. Apply the appropriate label using `update_issue`:
+   - Bug → add label `bug`
+   - Feature request → add label `feature`
+   - Question → no label needed
+6. Update the issue body with the rewritten version using `update_issue`.
+7. Add a short comment explaining that the issue was auto-formatted for clarity and labelled, and invite the reporter to correct anything that looks wrong.
 
 ## Templates
 
