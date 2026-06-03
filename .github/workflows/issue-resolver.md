@@ -33,6 +33,8 @@ safe-outputs:
   allowed-github-references: []
   create-pull-request:
     labels: [automated-fix]
+  noop:
+    report-as-issue: false
 ---
 
 # Issue Resolver
@@ -66,13 +68,15 @@ If no issue is suitable, stop immediately without producing any output.
 
 ## Step 4 — Implement
 
-1. Make the necessary code changes using the Edit/Write/Bash tools, following the existing code style and conventions
-2. Run the test suite if available (e.g. `uv run pytest` for Python projects)
-3. If tests fail and you cannot fix them, discard changes and stop without producing any output
+1. Use the Edit or Write tools to make the necessary code changes directly in the workspace files, following the existing code style and conventions
+2. Also write or update the relevant unit test file to cover the fix
+3. Run the test suite to verify: `uv run pytest` (Python). If tests fail and you cannot fix them, discard changes and stop without producing any output
 
 ## Step 5 — Submit via safe output
 
-Call the `create_pull_request` safe output with:
+**Important**: you must have made actual file edits in steps above before calling this — the safe output captures the diff of your workspace changes and creates the PR from it.
+
+Call `create_pull_request` with:
 - **Title**: concise summary of the fix
 - **Body**: what changed, why it fixes the issue, and `Closes #<number>` on its own line
 - **Branch name**: `fix/issue-<number>-<short-slug>`
