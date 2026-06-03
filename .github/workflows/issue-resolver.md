@@ -33,6 +33,7 @@ safe-outputs:
   allowed-github-references: []
   create-pull-request:
     labels: [automated-fix]
+    draft: false
   noop:
     report-as-issue: false
 ---
