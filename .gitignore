@@ -38,6 +38,10 @@ htmlcov/
 Thumbs.db
 
 # Virtual environments
+.venv/
 venv/
 env/
 ENV/
+
+# uv
+uv.lock

@@ -14,27 +14,25 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v4
       with:
         python-version: '3.11'
 
-    - name: Install linting tools
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 black isort mypy
+    - name: Install dependencies
+      run: uv sync
 
     - name: Check formatting with black
       run: |
-        black --check src/ tests/ || echo "BLACK_FAILED=true" >> $GITHUB_ENV
+        uv run black --check src/ tests/ || echo "BLACK_FAILED=true" >> $GITHUB_ENV
 
     - name: Check import sorting with isort
       run: |
-        isort --check-only src/ tests/ || echo "ISORT_FAILED=true" >> $GITHUB_ENV
+        uv run isort --check-only src/ tests/ || echo "ISORT_FAILED=true" >> $GITHUB_ENV
 
     - name: Lint with flake8
       run: |
-        flake8 src/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics || echo "FLAKE8_FAILED=true" >> $GITHUB_ENV
+        uv run flake8 src/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics || echo "FLAKE8_FAILED=true" >> $GITHUB_ENV
 
     - name: Comment on PR with results
       if: always()
@@ -50,12 +48,12 @@ jobs:
 
             if (blackFailed) {
               message += '- ❌ **Black**: Code formatting issues detected\n';
-              message += '  - Run `black src/ tests/` to fix\n\n';
+              message += '  - Run `uv run black src/ tests/` to fix\n\n';
             }
 
             if (isortFailed) {
               message += '- ❌ **isort**: Import sorting issues detected\n';
-              message += '  - Run `isort src/ tests/` to fix\n\n';
+              message += '  - Run `uv run isort src/ tests/` to fix\n\n';
             }
 
             if (flake8Failed) {
