@@ -21,9 +21,20 @@ ghaw-test/
 ├── src/                          # Source code
 │   ├── __init__.py
 │   └── calculator.py             # Calculator module (11 operations)
-├── tests/                        # Test files
+├── tests/                        # Test files (one file per function)
 │   ├── __init__.py
-│   └── test_calculator.py        # Tests for calculator
+│   ├── conftest.py
+│   ├── test_abs.py
+│   ├── test_add.py
+│   ├── test_clamp.py
+│   ├── test_divide.py
+│   ├── test_integer_divide.py
+│   ├── test_modulo.py
+│   ├── test_multiply.py
+│   ├── test_power.py
+│   ├── test_round_to.py
+│   ├── test_sqrt.py
+│   └── test_subtract.py
 ├── .github/
 │   ├── workflows/                # GitHub Actions workflows
 │   │   ├── ci.yml                # Continuous Integration
@@ -32,9 +43,9 @@ ghaw-test/
 │   │   ├── issue-manager.yml     # Issue lifecycle management
 │   │   ├── pr-auto-merge.yml     # Auto-merge approved PRs
 │   │   ├── code-quality.yml      # Code quality checks
-│   │   ├── daily-repo-status.md  # AI agentic: daily status report
-│   │   ├── issue-polisher.md     # AI agentic: reformats new issues
-│   │   └── issue-resolver.md     # AI agentic: opens fix PRs for issues
+│   │   ├── daily-repo-status.md  # AI agentic: daily status report (5am ET)
+│   │   ├── issue-polisher.md     # AI agentic: structures & labels new issues
+│   │   └── issue-resolver.md     # AI agentic: implements fixes and opens PRs
 │   └── labeler.yml               # Configuration for auto-labeling
 ├── pyproject.toml                # Project metadata & dependencies (uv)
 ├── WORKFLOWS_GUIDE.md            # Advanced agentic workflows guide
@@ -121,7 +132,7 @@ Reviews PRs automatically and provides feedback.
 Manages the lifecycle of issues.
 
 **Features:**
-- Greets new issue creators
+- Greets new issue creators and mentions the issue-polisher will auto-format the issue
 - Special greeting for first-time contributors
 - Automatically closes stale issues (60 days inactive)
 - Warns before closing (7 day grace period)
@@ -179,11 +190,14 @@ and Claude. Each is defined by a Markdown spec (`*.md`) that is compiled into a
 generated `*.lock.yml` workflow.
 
 - **Daily Repo Status** (`daily-repo-status.md`) — posts a daily digest issue
-  summarizing PRs, commits, open issues, and suggested next steps.
-- **Issue Polisher** (`issue-polisher.md`) — reformats new issues into a
-  structured template and applies a `bug`/`feature` label.
-- **Issue Resolver** (`issue-resolver.md`) — picks an open issue, implements a
-  fix with tests, and opens a pull request that closes it.
+  at 5am Toronto time (9am UTC) summarizing PRs, commits, open issues, and
+  suggested next steps.
+- **Issue Polisher** (`issue-polisher.md`) — triggers on every new issue;
+  restructures the body into a bug/feature/question template, adds an expected
+  unit test section, and applies a `bug` or `feature` label.
+- **Issue Resolver** (`issue-resolver.md`) — runs hourly; picks an open
+  `bug` or `feature` issue, implements a complete fix with tests, and opens a
+  pull request that closes it.
 
 See [`WORKFLOWS_GUIDE.md`](WORKFLOWS_GUIDE.md) for a deeper dive into agentic
 patterns and how to build your own.
