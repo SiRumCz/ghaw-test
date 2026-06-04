@@ -32,6 +32,7 @@ safe-outputs:
   mentions: false
   allowed-github-references: []
   update-issue: {}
+  add-labels: {}
   add-comment: {}
   noop:
     max: 1
@@ -64,7 +65,7 @@ A polished issue has:
 2. Identify the type: bug, feature request, or question.
 3. Check if it is already clear and complete — if so, call `noop`.
 4. Rewrite the body using the appropriate template below. Preserve all factual details from the original; only improve structure and clarity. Do not invent or assume missing information — leave a `_TODO: reporter to fill in_` placeholder instead.
-5. Apply the appropriate label using `update_issue`:
+5. Apply the appropriate label using `add_labels`:
    - Bug → add label `bug`
    - Feature request → add label `feature`
    - Question → no label needed
