@@ -15,7 +15,7 @@ engine:
     ANTHROPIC_BASE_URL: https://bmc-bz1.tail22da2e.ts.net
 
 on:
-  schedule: daily
+  schedule: "0 9 * * *"
   workflow_dispatch:
 
 permissions:
