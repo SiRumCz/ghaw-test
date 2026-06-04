@@ -18,25 +18,48 @@ Think of them as "agents" that help maintain and improve your repository without
 
 ```
 ghaw-test/
-├── src/                      # Source code
+├── src/                          # Source code
 │   ├── __init__.py
-│   └── calculator.py         # Simple calculator module
-├── tests/                    # Test files
+│   └── calculator.py             # Calculator module (11 operations)
+├── tests/                        # Test files
 │   ├── __init__.py
-│   └── test_calculator.py    # Tests for calculator
+│   └── test_calculator.py        # Tests for calculator
 ├── .github/
-│   ├── workflows/            # GitHub Actions workflows
-│   │   ├── ci.yml           # Continuous Integration
-│   │   ├── auto-label.yml   # Auto-labeling PRs and issues
-│   │   ├── auto-review.yml  # Automated PR reviews
-│   │   ├── issue-manager.yml # Issue lifecycle management
-│   │   ├── pr-auto-merge.yml # Auto-merge approved PRs
-│   │   └── code-quality.yml  # Code quality checks
-│   └── labeler.yml          # Configuration for auto-labeling
-├── requirements.txt          # Python dependencies
-├── .gitignore               # Git ignore rules
-└── README.md                # This file
+│   ├── workflows/                # GitHub Actions workflows
+│   │   ├── ci.yml                # Continuous Integration
+│   │   ├── auto-label.yml        # Auto-labeling PRs and issues
+│   │   ├── auto-review.yml       # Automated PR reviews
+│   │   ├── issue-manager.yml     # Issue lifecycle management
+│   │   ├── pr-auto-merge.yml     # Auto-merge approved PRs
+│   │   ├── code-quality.yml      # Code quality checks
+│   │   ├── daily-repo-status.md  # AI agentic: daily status report
+│   │   ├── issue-polisher.md     # AI agentic: reformats new issues
+│   │   └── issue-resolver.md     # AI agentic: opens fix PRs for issues
+│   └── labeler.yml               # Configuration for auto-labeling
+├── pyproject.toml                # Project metadata & dependencies (uv)
+├── WORKFLOWS_GUIDE.md            # Advanced agentic workflows guide
+├── .gitignore                    # Git ignore rules
+└── README.md                     # This file
 ```
+
+## Calculator Module
+
+The sample `src/calculator.py` module provides 11 arithmetic operations used to
+exercise the workflows:
+
+| Function | Description |
+| --- | --- |
+| `add(a, b)` | Add two numbers |
+| `subtract(a, b)` | Subtract `b` from `a` |
+| `multiply(a, b)` | Multiply two numbers |
+| `divide(a, b)` | Divide `a` by `b` (raises on divide by zero) |
+| `power(base, exponent)` | Raise `base` to `exponent` |
+| `modulo(a, b)` | Remainder of `a / b` (raises on modulo by zero) |
+| `integer_divide(a, b)` | Floor division of `a` by `b` (raises on divide by zero) |
+| `sqrt(n)` | Square root of `n` (raises on negatives) |
+| `abs(n)` | Absolute value of `n` |
+| `clamp(n, min_value, max_value)` | Constrain `n` to `[min_value, max_value]` |
+| `round_to(n, decimals)` | Round `n` to `decimals` places (half-up) |
 
 ## Workflows Overview
 
@@ -148,30 +171,47 @@ Checks code quality using linting and formatting tools.
 - Create a PR with poorly formatted code
 - See automated comments with fix suggestions
 
+### AI Agentic Workflows
+
+In addition to the script-based workflows above, this repository includes
+AI-powered agentic workflows built with [gh-aw](https://github.com/githubnext/gh-aw)
+and Claude. Each is defined by a Markdown spec (`*.md`) that is compiled into a
+generated `*.lock.yml` workflow.
+
+- **Daily Repo Status** (`daily-repo-status.md`) — posts a daily digest issue
+  summarizing PRs, commits, open issues, and suggested next steps.
+- **Issue Polisher** (`issue-polisher.md`) — reformats new issues into a
+  structured template and applies a `bug`/`feature` label.
+- **Issue Resolver** (`issue-resolver.md`) — picks an open issue, implements a
+  fix with tests, and opens a pull request that closes it.
+
+See [`WORKFLOWS_GUIDE.md`](WORKFLOWS_GUIDE.md) for a deeper dive into agentic
+patterns and how to build your own.
+
 ## Getting Started
 
 ### 1. Clone and Set Up Locally
 
+This project uses [uv](https://docs.astral.sh/uv/) to manage dependencies and
+the virtual environment.
+
 ```bash
-# Already cloned at /home/zkchen/ghaw-test
-
-# Create a virtual environment
+# Clone the repository
+git clone https://github.com/SiRumCz/ghaw-test.git
 cd ghaw-test
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Install dependencies
-pip install -r requirements.txt
+# Install dependencies (creates a managed virtual environment)
+uv sync
 ```
 
 ### 2. Run Tests Locally
 
 ```bash
 # Run all tests
-pytest tests/ -v
+uv run pytest
 
 # Run with coverage
-pytest tests/ -v --cov=src --cov-report=term-missing
+uv run pytest --cov=src --cov-report=term-missing
 ```
 
 ### 3. Test Workflows
